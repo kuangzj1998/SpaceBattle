@@ -2,15 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <TextView
-        android:text="@string/user_name"
-        android:textSize="20sp"
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView1"
-        android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="16dp"
+        android:text="@string/user_name"
+        android:textSize="20sp" />
 
     <EditText
         android:id="@+id/input_name"
@@ -19,9 +19,7 @@
         android:layout_height="40sp"
         android:background="@drawable/shape"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/textView1"
         android:layout_toEndOf="@+id/textView1"
-        android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"/>
 
@@ -31,7 +29,6 @@
         android:layout_width="200sp"
         android:layout_height="40sp"
         android:background="@drawable/shape"
-        android:layout_alignLeft="@+id/input_name"
         android:layout_alignStart="@+id/input_name"
         android:layout_marginTop="70dp"/>
 
@@ -43,6 +40,5 @@
         android:id="@+id/textView2"
         android:layout_alignBaseline="@+id/input_server"
         android:layout_alignBottom="@+id/input_server"
-        android:layout_toLeftOf="@+id/input_name"
         android:layout_toStartOf="@+id/input_name" />
 </RelativeLayout>

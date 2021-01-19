@@ -11,6 +11,7 @@ import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer mp=null;
     static boolean networkMode = false;
     String user_name = "";
-
     private MediaPlayer.OnCompletionListener CompletionListener = new MediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
@@ -52,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
         mp = new MediaPlayer();
 
         final View view= LayoutInflater.from(MainActivity.this).inflate(R.layout.input_user,null);
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
         final EditText user_name_in = (EditText)view.findViewById(R.id.input_name);
         final EditText server_in = (EditText)view.findViewById(R.id.input_server);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -104,16 +110,22 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .create();
         alertDialog.show();
-        alertDialog.getWindow().setLayout(1000,800);
+        //alertDialog.getWindow().setLayout(1000,800);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
+                //todo check click
+                Global.contentTop = getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();
+
+                System.out.println("bar: "+Global.statusBarHeight+"contenttop: "+Global.contentTop+"totop:"+(Global.realH-Global.contentTop));
                 //Toast.makeText(this,String.valueOf(event.getX())+" "+String.valueOf(event.getY()-240),Toast.LENGTH_SHORT).show();
                 float dx = Global.r2Vx(event.getX());
-                float dy = Global.r2Vy(event.getY()-240);
+                float dy = Global.r2Vy(event.getY());
+                Toast.makeText(this,String.valueOf(dx)+" "+String.valueOf(dy),Toast.LENGTH_SHORT).show();
+
                 String result = gameSurfaceView.gameObjects.getPressedButton(dx,dy);
                 if(!result.equals("None")) {
                     System.out.println("按了["+result+"]按钮");
@@ -146,8 +158,10 @@ public class MainActivity extends AppCompatActivity {
                         mp.setOnCompletionListener(CompletionListener);
 
                         long num = GameObjects.mySprite.shot();
-                        String data = JsonFunc.Bullet2JSON(Bullets.lqBullets.get(String.valueOf(num)));
-                        tcpSocket.sendString(data);
+                        if(networkMode) {
+                            String data = JsonFunc.Bullet2JSON(Bullets.lqBullets.get(String.valueOf(num)));
+                            tcpSocket.sendString(data);
+                        }
                     }
                     if(result.equals("自动")){
                         if(GameObjects.mySprite==null) break;
@@ -173,6 +187,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        tcpSocket.close();
+        if(networkMode) tcpSocket.close();
     }
 }

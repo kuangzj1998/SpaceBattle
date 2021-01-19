@@ -10,7 +10,7 @@ class Button {
     private final float RADIUS = 80;  // 半径 （虚拟单位）
     private final int FONT_SIZE = 48; // 字体大小（虚拟单位）
     String text;               // 按钮文本
-    float centerX;            // 虚拟坐标
+    float centerX;             // 虚拟坐标
     float centerY;
     private Paint paint1;
     private Paint paint2;
